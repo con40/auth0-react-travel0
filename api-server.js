@@ -5,12 +5,13 @@ const helmet = require("helmet");
 const jwt = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
 const authConfig = require("./src/auth_config.json");
+const { join } = require("path");//xpmt
 
 const app = express();
 
-const port = process.env.API_PORT || 3001;
-const appPort = process.env.SERVER_PORT || 3000;
-const appOrigin = authConfig.appOrigin || `http://localhost:${appPort}`;
+//const port = process.env.API_PORT || 3001;
+const appPort = process.env.PORT || 3000;
+const appOrigin = authConfig.appOrigin || `http//localhost:${appPort}`;
 
 if (!authConfig.domain || !authConfig.audience) {
   throw new Error(
@@ -21,6 +22,8 @@ if (!authConfig.domain || !authConfig.audience) {
 app.use(morgan("dev"));
 app.use(helmet());
 app.use(cors({ origin: appOrigin }));
+
+app.use(express.static(join(__dirname, "build")));
 
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
@@ -38,7 +41,13 @@ const checkJwt = jwt({
 app.get("/api/external", checkJwt, (req, res) => {
   res.send({
     msg: "Your access token was successfully validated!"
-  });
+  }); 
 });
 
-app.listen(port, () => console.log(`API Server listening on port ${port}`));
+app.get(['/*'], function (req, res) {
+  res.sendFile(join(__dirname, 'build', 'index.html'))
+});
+
+app.listen(appPort, () => console.log(`Server listening on port ${appPort}`));
+
+//app.listen(port, () => console.log(`API Server listening on port ${port}`));
