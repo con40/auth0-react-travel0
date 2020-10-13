@@ -2,7 +2,7 @@
   "domain": "con40-travel0.us.auth0.com",
   "clientId": "OcH3EBYa5OewJ5em6F0GIn4THnFKHXrX",
   "audience": "http://localhost:3000",
-  "appOrigin": "http://localhost:3000",
-  "apiOrigin": "http://localhost:3000"
+  "appOrigin": "https://travel0-poc.herokuapp.com",
+  "apiOrigin": "https://travel0-poc.herokuapp.com"
 }
 
